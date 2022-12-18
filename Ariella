@@ -1,0 +1,194 @@
+#DESAFIO DA ARIELLA ELEOTÉRIO
+
+setwd("C:/Users/SAMSUNG/Documents")
+
+#------------------------------------------------------------------------------#
+#                LIMPANDO E DEFININDO ALGUMAS CONFIGURAÇÕES                    #
+#------------------------------------------------------------------------------#
+
+rm(list = ls())
+options(scipen = 9999)
+options(max.print = 100000)
+
+#------------------------------------------------------------------------------#
+#                             ABRINDO MEUS DADOS                               #
+#------------------------------------------------------------------------------#
+
+dados = read.table("combustíveis.txt", head = T, dec = ",")
+dados
+
+names(dados) <- c("Etanol", "Diesel", "Gasolina")
+attach(dados)
+dados
+Etanol
+Diesel
+Gasolina
+
+head(dados)
+tail(dados)
+
+summary(dados)
+
+#------------------------------------------------------------------------------#
+#                       TRANSFORMANDO EM SÉRIE TEMPORAL                        #
+#------------------------------------------------------------------------------#
+
+Etanol <- ts(Etanol, frequency = 12, start = c(2000,1))
+Diesel <- ts(Diesel, frequency = 12, start = c(2000,1))
+Gasolina <- ts(Gasolina, frequency = 12, start = c(2000,1))
+
+#------------------------------------------------------------------------------#
+#                            REPRESENTAÇÃO GRÁFICA                             #
+#------------------------------------------------------------------------------#
+
+plot(Etanol)
+plot(Etanol, xlab = "Anos", ylab = "Metros Cúbicos", col = "black", main =
+     "Etanol no período de 2000.1 à 2020.12")
+plot(Etanol, xlab = "Anos", ylab = "Metros Cúbicos", bty = "l", lwd = "2", col = 
+     "black", main = "Etanol no período de 2000.1 à 2020.12")
+
+plot(Diesel)
+plot(Diesel, xlab = "Anos", ylab = "Metros Cúbicos", col = "black", main =
+     "Diesel no período de 2000.1 à 2020.12")
+plot(Diesel, xlab = "Anos", ylab = "Metros Cúbicos", bty = "l", lwd = "2", col = 
+     "black", main = "Diesel no período de 2000.1 à 2020.12")
+
+plot(Gasolina)
+plot(Gasolina, xlab = "Anos", ylab = "Metros Cúbicos", col = "black", main =
+     "Gasolina no período de 2000.1 à 2020.12")
+plot(Gasolina, xlab = "Anos", ylab = "Metros Cúbicos", bty = "l", lwd = "2", 
+     col = "black", main = "Gasolina no período de 2000.1 à 2020.12")
+
+#------------------------------------------------------------------------------#
+#                  ESTATÍSTICA DESCRITIVA E NORMALIDADE                        #
+#------------------------------------------------------------------------------#
+
+#ESTATÍSTICA DRESCRITIVA [Etanol]
+min(Etanol)
+mean(Etanol)
+median(Etanol)
+max(Etanol)
+summary(Etanol)
+sd(Etanol)
+
+#COEFICIENTE DE VARIAçÂO
+CVEtanol = sd(Etanol)/mean(Etanol)*100
+CVEtanol
+
+#TESTE DE NORMALIDADE
+#install.packages("fBasics")
+require(fBasics)
+hist(Etanol, nclass = 30, col ="black", labels = T, xlab = "Etanol", ylab = 
+     "Frequência", main = "Histograma - Etanol no período de 2000.1 à 2020.12")
+jarqueberaTest(Etanol)
+shapiro.test(Etanol)
+
+#ASSIMETRIA E CURTOSE
+library(moments)
+skewness(Etanol)
+kurtosis(Etanol)
+
+#ESTATÍSTICA DRESCRITIVA [Diesel]
+min(Diesel)
+mean(Diesel)
+median(Diesel)
+max(Diesel)
+summary(Diesel)
+sd(Diesel)
+
+#COEFICIENTE DE VARIAçÂO
+CVDiesel = sd(Diesel)/mean(Diesel)*100
+CVDiesel
+
+#TESTE DE NORMALIDADE
+hist(Diesel, nclass = 30, col ="black", labels = T, xlab = "Etanol", ylab = 
+     "Frequência", main = "Histograma - Diesel no período de 2000.1 à 2020.12")
+jarqueberaTest(Diesel)
+shapiro.test(Diesel)
+
+#ASSIMETRIA E CURTOSE
+library(moments)
+skewness(Diesel)
+kurtosis(Diesel)
+
+#ESTATÍSTICA DRESCRITIVA [Gasolina]
+min(Gasolina)
+mean(Gasolina)
+median(Gasolina)
+max(Gasolina)
+summary(Gasolina)
+sd(Gasolina)
+
+#COEFICIENTE DE VARIAçÂO
+CVGasolina = sd(Gasolina)/mean(Gasolina)*100
+CVGasolina
+
+#TESTE DE NORMALIDADE
+hist(Gasolina, nclass = 30, col ="black", labels = T, xlab = "Etanol", ylab = 
+     "Frequência", main = "Histograma - Gasolina no período de 2000.1 à 
+     2020.12")
+jarqueberaTest(Gasolina)
+shapiro.test(Gasolina)
+
+#ASSIMETRIA E CURTOSE
+library(moments)
+skewness(Gasolina)
+kurtosis(Gasolina)
+
+#------------------------------------------------------------------------------#
+#                         CÁLCULO DA TAXA DE CRESCIMENTO                       #
+#------------------------------------------------------------------------------#
+
+#TAXA DE CRESCIMENTO [Etanol]
+Etanol
+n = length(Etanol); n
+
+head(Etanol)
+tail(Etanol)
+
+TaxaEtanol <- ((Etanol[n]/Etanol[1]) - 1)*100
+TaxaEtanol
+
+##TAXA MÉDIA MENSAL ARITMÉTICA
+AritEtanol <- ((Etanol[n] - Etanol[1])/(Etanol[1]*n))*100
+AritEtanol
+
+##TAXA MÉDIA MENSAL GEOMÉTRICA
+GeoEtanol <- (((Etanol[n]/Etanol[1])^(1/n)) - 1)*100
+GeoEtanol
+
+#TAXA DE CRESCIMENTO [Diesel]
+Diesel
+n = length(Diesel); n
+
+head(Diesel)
+tail(Diesel)
+
+TaxaDiesel <- ((Diesel[n]/Diesel[1]) - 1)*100
+TaxaDiesel
+
+##TAXA MÉDIA MENSAL ARITMÉTICA
+AritDiesel <- ((Diesel[n] - Diesel[1])/(Diesel[1]*n))*100
+AritDiesel
+
+##TAXA MÉDIA MENSAL GEOMÉTRICA
+GeoDiesel <- (((Diesel[n]/Diesel[1])^(1/n)) - 1)*100
+GeoDiesel
+
+#TAXA DE CRESCIMENTO [Gasolina]
+Gasolina
+n = length(Gasolina); n
+
+head(Gasolina)
+tail(Gasolina)
+
+TaxaGasolina <- ((Gasolina[n]/Gasolina[1]) - 1)*100
+TaxaGasolina
+
+##TAXA MÉDIA MENSAL ARITMÉTICA
+AritGasolina <- ((Gasolina[n] - Gasolina[1])/(Gasolina[1]*n))*100
+AritGasolina
+
+##TAXA MÉDIA MENSAL GEOMÉTRICA
+GeoGasolina <- (((Gasolina[n]/Gasolina[1])^(1/n)) - 1)*100
+GeoGasolina
